@@ -41,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
 
         // 新增一个调用请求对象
         Call call = okHttpClient.newCall(request);
+
+        // 同步调用 使用execute发起
+        // call.execute();  // 代码阻塞, 直到响应返回一个Response对象
+
+        // 异步调用 请求对象添加到队列
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
