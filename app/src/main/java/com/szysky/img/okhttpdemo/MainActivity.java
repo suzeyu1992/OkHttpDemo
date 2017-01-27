@@ -32,12 +32,17 @@ public class MainActivity extends AppCompatActivity {
      */
     public void send_get(View tv_get){
 
+        String url = "http://gc.ditu.aliyun.com/geocoding?a=苏州";
+
         OkHttpClient okHttpClient = new OkHttpClient();
 
         // 创建请求头
         Request request = new Request.Builder()
-                .url("http://gc.ditu.aliyun.com/geocoding?a=苏州")
+                .url(url)
+                .tag(url)
                 .build();
+
+
 
         // 新增一个调用请求对象
         Call call = okHttpClient.newCall(request);
@@ -59,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 response.close();
             }
         });
+        cancelCallWithTag(url, okHttpClient);
     }
 
 
@@ -104,6 +110,30 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+
+    /**
+     * 取消Request请求
+     */
+    public void cancelCallWithTag(String tag, OkHttpClient httpClient){
+
+        // 遍历请求队列中待处理的 网络请求
+        for (Call call : httpClient.dispatcher().queuedCalls()) {
+            if (call.request().tag().equals(tag)){
+                call.cancel();
+                Log.i(TAG, "请求队列中的网络请求已经取消: tag= "+tag);
+            }
+        }
+
+        // 遍历正在请求的对象
+        for (Call call : httpClient.dispatcher().runningCalls()) {
+            if (call.request().tag().equals(tag)) {
+                call.cancel();
+                Log.i(TAG, "正在发起的网络请求已经取消: tag= " + tag);
+            }
+        }
 
     }
 }
