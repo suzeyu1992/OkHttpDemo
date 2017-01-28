@@ -7,6 +7,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.facebook.stetho.Stetho;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
+
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -34,7 +37,12 @@ public class MainActivity extends AppCompatActivity {
 
         String url = "http://gc.ditu.aliyun.com/geocoding?a=苏州";
 
-        OkHttpClient okHttpClient = new OkHttpClient();
+        OkHttpClient okHttpClient = new OkHttpClient()
+                .newBuilder()
+                .addNetworkInterceptor(new StethoInterceptor())
+                .build();
+
+
 
         // 创建请求头
         Request request = new Request.Builder()
@@ -64,7 +72,9 @@ public class MainActivity extends AppCompatActivity {
                 response.close();
             }
         });
-        cancelCallWithTag(url, okHttpClient);
+
+        // 取消网络请求
+        //cancelCallWithTag(url, okHttpClient);
     }
 
 
