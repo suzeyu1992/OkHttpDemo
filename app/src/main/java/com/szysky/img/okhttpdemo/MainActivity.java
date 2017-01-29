@@ -1,5 +1,6 @@
 package com.szysky.img.okhttpdemo;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.JsonReader;
@@ -10,7 +11,9 @@ import android.widget.Toast;
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -40,7 +43,9 @@ public class MainActivity extends AppCompatActivity {
         OkHttpClient okHttpClient = new OkHttpClient()
                 .newBuilder()
                 .addNetworkInterceptor(new StethoInterceptor())
+                .addInterceptor(new UserAgentIntercept("android 8.8  version/111"))     // 设置请求头的User-Agent字段
                 .build();
+
 
 
 
@@ -146,4 +151,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+
 }
