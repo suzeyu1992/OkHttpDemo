@@ -42,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
 
         OkHttpClient okHttpClient = new OkHttpClient()
                 .newBuilder()
+                .connectTimeout(1000, TimeUnit.MILLISECONDS)
+                .readTimeout(1000, TimeUnit.MILLISECONDS)
+                .writeTimeout(1000, TimeUnit.MILLISECONDS)
                 .addNetworkInterceptor(new StethoInterceptor())
                 .addInterceptor(new UserAgentIntercept("android 8.8  version/111"))     // 设置请求头的User-Agent字段
                 .build();
