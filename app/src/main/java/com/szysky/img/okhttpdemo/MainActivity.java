@@ -13,10 +13,13 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -155,5 +158,25 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * RequestBody构建方式之 FromBody
+     * 提交键值对的表单
+     */
+    public RequestBody buildFormBody(){
+        FormBody build = null;
+        try {
+             build = new FormBody.Builder()
+                    .add("os", "android")               // 添加key value
+                    .add("id", "22")                    // 自动编码
+                    .addEncoded(URLEncoder.encode("开发职位", "GBK"),
+                            URLEncoder.encode("前端", "GBK"))     // 手动添加已经编码的键值对
+                    .build();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }finally {
+            return build;
+        }
 
+
+    }
 }
