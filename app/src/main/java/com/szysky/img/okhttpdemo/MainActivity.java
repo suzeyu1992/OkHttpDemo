@@ -20,7 +20,9 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.Headers;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -159,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * RequestBody构建方式之 FromBody
+     * RequestBody构建方式之 FormBody
      * 提交键值对的表单
      */
     public RequestBody buildFormBody(){
@@ -178,5 +180,23 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+    }
+
+
+    /**
+     * RequestBody构建方式之 MultipartBody
+     */
+    public RequestBody buildFormMultiBody(){
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addPart(
+                        Headers.of("Content-Disposition", "form-data; name=\"title\""),
+                        RequestBody.create(null, "Logo"))
+                .addPart(
+                        Headers.of("Content-Disposition", "form-data; name=\"image\""),
+                        RequestBody.create(MediaType.parse("image/png"), new File("website/static/logo.png")))
+                .addFormDataPart("discription","beautiful")
+                .build();
+        return requestBody;
     }
 }
