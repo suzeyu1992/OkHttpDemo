@@ -17,6 +17,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Cache;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -200,5 +201,21 @@ public class MainActivity extends AppCompatActivity {
         return requestBody;
     }
 
+
+    /**
+     * 构建 OkHttpClient 所需要的cache对象
+     *      尽量在在应用内部, 防止外界可以访问到
+     *      对一个OkHttpClient实例设置. 通过每个请求的请求头可以为每个请求配置缓存的使用情况
+     *      Cache-Control: max-age=9600指定缓存的生存期.
+     *      Cache-Control: no-cache指定不使用缓存
+     */
+    public Cache buildCache(){
+        File cacheDir = getCacheDir();
+        if (cacheDir != null){
+            int cacheSize = 50 * 1024 * 1024; // 50M
+            return new Cache(cacheDir, cacheSize);
+        }
+        return null;
+    }
 
 }
